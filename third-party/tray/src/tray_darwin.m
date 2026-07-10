@@ -94,8 +94,14 @@ int tray_loop(int blocking) {
 }
 
 void tray_update(struct tray *tray) {
+  if (![NSThread isMainThread]) {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      tray_update(tray);
+    });
+    return;
+  }
+
   NSImage *image = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:tray->icon]];
-  NSSize size = NSMakeSize(16, 16);
   [image setSize:NSMakeSize(16, 16)];
   statusItem.button.image = image;
   [statusItem setMenu:_tray_menu(tray->menu)];
