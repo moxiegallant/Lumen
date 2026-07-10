@@ -15,3 +15,5 @@ node_modules/
 # Temporary
 *.log
 *.tmp
+
+docs/doxyconfig*
