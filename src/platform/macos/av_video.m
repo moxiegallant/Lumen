@@ -22,12 +22,17 @@
   NSMutableArray *result = [NSMutableArray array];
 
   for (uint32_t i = 0; i < count; i++) {
-    [result addObject:@{
-      @"id": [NSNumber numberWithUnsignedInt:displays[i]],
-      @"name": [NSString stringWithFormat:@"%d", displays[i]],
-      @"displayName": [self getDisplayName:displays[i]],
-    }];
+  NSString *displayName = [self getDisplayName:displays[i]];
+  if (displayName == nil) {
+    displayName = [NSString stringWithFormat:@"Display %u", displays[i]];
   }
+
+  [result addObject:@{
+    @"id": [NSNumber numberWithUnsignedInt:displays[i]],
+    @"name": [NSString stringWithFormat:@"%u", displays[i]],
+    @"displayName": displayName,
+  }];
+}
 
   return [NSArray arrayWithArray:result];
 }
